@@ -62,7 +62,7 @@ func main() {
 			continue
 		}
 		if loadAverage > 30 {
-			fmt.Printf("Load Average is too high: %.2f\n", loadAverage)
+			fmt.Printf("Load Average is too high: %.0f\n", loadAverage) // Изменено с %.2f на %.0f
 		}
 
 		// Memory
@@ -93,7 +93,8 @@ func main() {
 		if totalDisk > 0 {
 			diskUsage := float64(usedDisk) / float64(totalDisk) * 100
 			if diskUsage > 90 {
-				freeDiskMB := (totalDisk - usedDisk) / 1024 / 1024
+				// Исправлен расчет: делим на 1024 только один раз для перевода килобайт в мегабайты
+				freeDiskMB := (totalDisk - usedDisk) / 1024
 				fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
 			}
 		}
@@ -110,8 +111,9 @@ func main() {
 		if totalNet > 0 {
 			netUsage := float64(usedNet) / float64(totalNet) * 100
 			if netUsage > 90 {
-				availableNetMbit := float64(totalNet-usedNet) / 125000
-				fmt.Printf("Network bandwidth usage high: %.2f Mbit/s available\n", availableNetMbit)
+				// Исправлен расчет: делим на 1000 для перевода килобит в мегабиты
+				availableNetMbit := float64(totalNet-usedNet) / 1000
+				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", availableNetMbit) // Изменено на %.0f
 			}
 		}
 
